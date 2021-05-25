@@ -14,11 +14,13 @@ struct ContentView: View {
   static let moves = [rock, paper, scissors]
   static let winners = [rock: paper, paper: scissors, scissors: rock]
   static let losers = [rock: scissors, paper: rock, scissors: paper]
+  static let maximumRounds = 10
   
   @State private var appMove = Int.random(in: 0 ..< moves.count)
   @State private var shouldWin = Bool.random()
   @State private var score = 0
   @State private var playerMove = 0
+  @State private var currentRound = 1
   
   var body: some View {
     VStack {
@@ -29,6 +31,7 @@ struct ContentView: View {
       ForEach(0 ..< ContentView.moves.count) { number in
         Button(ContentView.moves[number]) {
           playerMove = number
+          
           if shouldWin {
             if ContentView.winners[ContentView.moves[appMove]] == ContentView.moves[playerMove] {
               score += 1
@@ -42,9 +45,20 @@ struct ContentView: View {
               score -= 1
             }
           }
+          
+          nextRound()
         }
+        .disabled(currentRound > ContentView.maximumRounds)
       }
       Spacer()
+    }
+  }
+  
+  func nextRound() {
+    currentRound += 1
+    if currentRound <= ContentView.maximumRounds {
+      appMove = Int.random(in: 0 ..< ContentView.moves.count)
+      shouldWin = Bool.random()
     }
   }
 }
