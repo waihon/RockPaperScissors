@@ -28,6 +28,20 @@ struct ContentView: View {
       Text("Player's Move:")
       ForEach(0 ..< ContentView.moves.count) { number in
         Button(ContentView.moves[number]) {
+          playerMove = number
+          if shouldWin {
+            if ContentView.winners[ContentView.moves[appMove]] == ContentView.moves[playerMove] {
+              score += 1
+            } else {
+              score -= 1
+            }
+          } else {
+            if ContentView.losers[ContentView.moves[appMove]] == ContentView.moves[playerMove] {
+              score += 1
+            } else {
+              score -= 1
+            }
+          }
         }
       }
       Spacer()
